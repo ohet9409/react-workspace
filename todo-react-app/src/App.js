@@ -2,7 +2,8 @@
 import './App.css';
 import React from 'react';
 import Todo from './Todo';
-import {Paper, List} from "@material-ui/core";
+import {Paper, List, Container} from "@material-ui/core";
+import AddTodo from './AppTodo';
 
 class App extends React.Component {
   constructor(props) {
@@ -15,6 +16,17 @@ class App extends React.Component {
     };
   }
 
+  // (1) 함수 추가
+  add = (item) => {
+    const thisItem = this.state.items2;
+    item.id = "ID-" + thisItem.length; // key를 위한 id 추가
+    item.done = false; // done 초기화
+    thisItem.push(item); // 리스트에 아이템 추가
+    this.setState({items2: thisItem});
+    console.log("item: " , this.state.title);
+  };
+
+
   render() {
     var todoItems = this.state.items2.length > 0 && (
       <Paper style={{margin: 16}}>
@@ -25,7 +37,16 @@ class App extends React.Component {
         </List>
       </Paper>
     );
-    return <div className="App">{todoItems}</div>;
+
+    // (2) 함수 연결
+    return (
+      <div className ="App">
+        <Container maxWidth="md">
+          <AddTodo add={this.add}/>
+          <div className="TodoList">{todoItems}</div>
+        </Container>
+      </div>
+    );
     
   }
 }
