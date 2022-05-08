@@ -26,13 +26,25 @@ class App extends React.Component {
     console.log("item: " , this.state.title);
   };
 
+  // delete 함수 작성
+  delete = (item) => {
+    const thisItems = this.state.items2;
+    console.log("Before Update Items: ", this.state.items2);
+    const newItems = thisItems.filter(e => e.id !== item.id);
+    this.setState({items2: newItems}, () => {
+      // 디버깅 콜백
+      console.log("Update Items: ", this.state.items2);
+    });
+  }
 
   render() {
     var todoItems = this.state.items2.length > 0 && (
       <Paper style={{margin: 16}}>
         <List>
           {this.state.items2.map((item, idx) => (
-            <Todo item={item} key = {item.id}/>
+            //<Todo item={item} key = {item.id}/>
+            // delete 함수 연결
+            <Todo item={item} key={item.id} delete={this.delete}/>
           ))}
         </List>
       </Paper>
@@ -46,6 +58,7 @@ class App extends React.Component {
           <div className="TodoList">{todoItems}</div>
         </Container>
       </div>
+
     );
     
   }
