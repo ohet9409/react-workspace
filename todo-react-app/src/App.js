@@ -4,15 +4,15 @@ import React from 'react';
 import Todo from './Todo';
 import {Paper, List, Container} from "@material-ui/core";
 import AddTodo from './AppTodo';
-import {call} from "./servixe/ApiServixe";
+import {call} from "./servixe/ApiService";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items2: [
-        {id: 0, title: 'Hello World 1', done: true},
-        {id: 1, title: 'Hello World 2', done: false},
+      items: [
+        // {id: 0, title: 'Hello World 1', done: true},
+        // {id: 1, title: 'Hello World 2', done: false},
       ],
     };
   }
@@ -53,7 +53,7 @@ class App extends React.Component {
 
     
       call("/todo", "POST", item).then((response) => 
-        this.setState({item: response.data})  
+        this.setState({items: response.data})  
       );
     
   };
@@ -79,10 +79,10 @@ class App extends React.Component {
   };
 
   render() {
-    var todoItems = this.state.items2.length > 0 && (
+    var todoItems = this.state.items.length > 0 && (
       <Paper style={{margin: 16}}>
         <List>
-          {this.state.items2.map((item, idx) => (
+          {this.state.items.map((item, idx) => (
             //<Todo item={item} key = {item.id}/>
             // delete 함수 연결
             <Todo item={item} key={item.id} delete={this.delete} update={this.update}/>
