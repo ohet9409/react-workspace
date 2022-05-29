@@ -70,3 +70,12 @@ export function signin(userDTO) {
       }
     });
 }
+
+export function signout() {
+  localStorage.setItem(ACCESS_TOKEN, null);
+  window.location.href="/login";
+}
+
+export function signup(userDTO) {
+  return call("/auth/signup", "POST", userDTO);
+}
