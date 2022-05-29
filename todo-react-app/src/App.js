@@ -4,7 +4,7 @@ import React from 'react';
 import Todo from './Todo';
 import {Paper, List, Container} from "@material-ui/core";
 import AddTodo from './AppTodo';
-import {call} from "./servixe/ApiService";
+import {call} from "./service/ApiService";
 
 class App extends React.Component {
   constructor(props) {
