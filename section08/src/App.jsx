@@ -1,4 +1,4 @@
-import { useCallback, useReducer, useRef, useState } from 'react'
+import { createContext, useCallback, useMemo, useReducer, useRef, useState } from 'react'
 import './App.css'
 import Editor from './components/Editor'
 import Header from './components/Header'
@@ -47,6 +47,11 @@ const reducer = (state, action) => {
   }
 }
 
+// 변해야 하는 값
+export const TodoStateContext = createContext();
+// 변하지 않는 값
+export const TodoDispatchContext = createContext();
+
 function App() {
   
   const [todos, dispatch] = useReducer(reducer, mockData);
@@ -86,11 +91,21 @@ function App() {
     });
   }, [])
 
+  // 다시 생성되지 않도록 memo hook 사용
+  const memoizedDispatch = useMemo(() =>{
+    return {onCreate, onUpdate, onDelete};
+  }, [])
+
   return (
     <div className='App'>
       <Header/>
-      <Editor onCreate={onCreate}/>
-      <List todos={todos} onUpdate={onUpdate} onDelete= {onDelete}/>
+      <TodoStateContext.Provider value={todos}>
+        <TodoDispatchContext.Provider value={memoizedDispatch}>
+          <Editor/>
+          <List/>
+        </TodoDispatchContext.Provider>
+      </TodoStateContext.Provider>
+      
       {/* <Exam/> */}
     </div>
   )
