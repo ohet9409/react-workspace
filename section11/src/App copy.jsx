@@ -1,15 +1,21 @@
 
+/**
+ * 이미지 불러오는 예시
+ */
+
 import { Link, Route, Routes, useNavigate } from 'react-router-dom'
 import './App.css'
 import Home from './pages/Home'
 import New from './pages/New'
 import Diary from './pages/Diary'
 import Notfound from './pages/Notfound'
-import getEmotionImage from './utill/get-emotion-image'
 
 // assets 경로에 이미지를 넣을 경우 한번 불러오면 갱신해도 계속 요청하지 않음
-
-
+import emotion1 from './assets/emotion1.png';
+import emotion2 from './assets/emotion2.png';
+import emotion3 from './assets/emotion3.png';
+import emotion4 from './assets/emotion4.png';
+import emotion5 from './assets/emotion5.png';
 
 
 function App() {
@@ -25,13 +31,22 @@ function App() {
 
   return (
     <>
+      {/* public 경로에서 가져오면 리랜더링 될 때마다 이미지 갱신 */}
+      <div>
+        <img src="/emotion1.png" alt="" />
+        <img src="/emotion2.png" alt="" />
+        <img src="/emotion3.png" alt="" />
+        <img src="/emotion4.png" alt="" />
+        <img src="/emotion5.png" alt="" />
+      </div>
+
       {/* assets 경로에서 가져올때 : data uri를 통한 이미지 최적화 진행 -> 브라우저 메모리에 캐시된 이미지를 사용*/}
       <div>
-        <img src={getEmotionImage(1)} alt="" />
-        <img src={getEmotionImage(2)} alt="" />
-        <img src={getEmotionImage(3)} alt="" />
-        <img src={getEmotionImage(4)} alt="" />
-        <img src={getEmotionImage(5)} alt="" />
+        <img src={emotion1} alt="" />
+        <img src={emotion2} alt="" />
+        <img src={emotion3} alt="" />
+        <img src={emotion4} alt="" />
+        <img src={emotion5} alt="" />
       </div>
       <div>
         <Link to={"/"}>Home</Link>
