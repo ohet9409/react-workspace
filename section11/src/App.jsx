@@ -8,13 +8,40 @@ import Notfound from './pages/Notfound'
 import getEmotionImage from './utill/get-emotion-image'
 import Button from './components/Button'
 import Header from './components/Header'
+import Edit from './pages/Edit'
+import { useReducer } from 'react'
 
 // assets 경로에 이미지를 넣을 경우 한번 불러오면 갱신해도 계속 요청하지 않음
 
+const mockData = [
+  {
+    id: 1,
+    createdDate: new Date().getTime,
+    emotionId: 1,
+    content: "1번 일기 내용",
+  },
+  {
+    id: 2,
+    createdDate: new Date().getTime,
+    emotionId: 2,
+    content: "2번 일기 내용",
+  }
+  ,
+  {
+    id: 3,
+    createdDate: new Date().getTime,
+    emotionId: 3,
+    content: "3번 일기 내용",
+  }
+]
 
-
+function reducer(state, action) {
+  return state;
+}
 
 function App() {
+  const [data, dispatch] = useReducer(reducer, mockData);
+
   const nav = useNavigate();
 
   const onClickButton = () => {
@@ -27,18 +54,11 @@ function App() {
 
   return (
     <>
-      <Header title={"Header"}
-        leftChild={<Button text={"Left"}/>}
-        rightChild={<Button text={"Right"}/>}
-      />
-      <Button text={123} onClick={() => {console.log("123번 클릭")}} type={"DEFAULT"}/>
-      <Button text={123} onClick={() => {console.log("123번 클릭")}} type={"POSITIVE"}/>
-      <Button text={123} onClick={() => {console.log("123번 클릭")}} type={"NEGATIVE"}/>
-      
       <Routes>
         <Route path='/' element={<Home/>}></Route>
         <Route path='/new' element={<New/>}></Route>
-        <Route path='/diary' element={<Diary/>}></Route>
+        <Route path='/diary/:id' element={<Diary/>}></Route>
+        <Route path='/edit/:id' element={<Edit/>}></Route>
         <Route path='*' element={<Notfound/>}></Route>
       </Routes>
     </>
