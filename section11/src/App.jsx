@@ -6,6 +6,8 @@ import New from './pages/New'
 import Diary from './pages/Diary'
 import Notfound from './pages/Notfound'
 import getEmotionImage from './utill/get-emotion-image'
+import Button from './components/Button'
+import Header from './components/Header'
 
 // assets 경로에 이미지를 넣을 경우 한번 불러오면 갱신해도 계속 요청하지 않음
 
@@ -25,25 +27,14 @@ function App() {
 
   return (
     <>
-      {/* assets 경로에서 가져올때 : data uri를 통한 이미지 최적화 진행 -> 브라우저 메모리에 캐시된 이미지를 사용*/}
-      <div>
-        <img src={getEmotionImage(1)} alt="" />
-        <img src={getEmotionImage(2)} alt="" />
-        <img src={getEmotionImage(3)} alt="" />
-        <img src={getEmotionImage(4)} alt="" />
-        <img src={getEmotionImage(5)} alt="" />
-      </div>
-      <div>
-        <Link to={"/"}>Home</Link>
-        <Link to={"/new"}>New</Link>
-        <Link to={"/diary"}>Diary</Link>
-
-        {/* <a href='/'>Home</a>
-        <a href='/new'>New</a>
-        <a href='/diary'>Diary</a> */}
-
-      </div>
-      <button onClick={onClickButton}>New 페이지로 이동</button>
+      <Header title={"Header"}
+        leftChild={<Button text={"Left"}/>}
+        rightChild={<Button text={"Right"}/>}
+      />
+      <Button text={123} onClick={() => {console.log("123번 클릭")}} type={"DEFAULT"}/>
+      <Button text={123} onClick={() => {console.log("123번 클릭")}} type={"POSITIVE"}/>
+      <Button text={123} onClick={() => {console.log("123번 클릭")}} type={"NEGATIVE"}/>
+      
       <Routes>
         <Route path='/' element={<Home/>}></Route>
         <Route path='/new' element={<New/>}></Route>
