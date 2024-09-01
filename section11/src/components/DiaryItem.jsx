@@ -1,4 +1,4 @@
-import getEmotionImage from '../utill/get-emotion-image';
+import getEmotionImage from '../util/get-emotion-image';
 import Button from './Button';
 import "./DiaryItem.css"
 
