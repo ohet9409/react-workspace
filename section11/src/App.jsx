@@ -1,5 +1,5 @@
 
-import { Link, Route, Routes, useNavigate } from 'react-router-dom'
+import { json, Link, Route, Routes, useNavigate } from 'react-router-dom'
 import './App.css'
 import Home from './pages/Home'
 import New from './pages/New'
@@ -9,7 +9,7 @@ import getEmotionImage from './util/get-emotion-image'
 import Button from './components/Button'
 import Header from './components/Header'
 import Edit from './pages/Edit'
-import { act, createContext, useReducer, useRef } from 'react'
+import { act, createContext, useEffect, useReducer, useRef, useState } from 'react'
 
 // assets 경로에 이미지를 넣을 경우 한번 불러오면 갱신해도 계속 요청하지 않음
 
@@ -42,24 +42,71 @@ const mockData = [
 ]
 
 function reducer(state, action) {
+  let nextState;
+
   switch(action.type) {
+    case "INIT":
+      return action.data;
     case "CREATE":
-      return [action.data, ...state];
+      {
+        nextState = [action.data, ...state];
+        break;
+      }
     case "UPDATE":
-      return state.map((item) => String(item.id) === String(action.data.id)? action.data : item)
+      {
+        nextState = state.map((item) => String(item.id) === String(action.data.id)? action.data : item)
+        break;
+      }
     case "DELETE":
-      return state.filter((item) => String(item.id) !== String(action.id))
+      {
+        nextState = state.filter((item) => String(item.id) !== String(action.id))
+        break;
+      }
     default:
       return state;
   }
+  localStorage.setItem("diary", JSON.stringify(nextState));
+  return nextState;
 }
 
 export const DiaryStateContext = createContext();
 export const DiaryDispatchContext = createContext();
 
 function App() {
-  const [data, dispatch] = useReducer(reducer, mockData);
-  const idRef = useRef(4);
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, dispatch] = useReducer(reducer, []);
+  const idRef = useRef(3);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("diary");
+
+    if (!storedData) {
+      setIsLoading(false);
+      return;
+    }
+
+    const parsedData = JSON.parse(storedData);
+    if (!Array.isArray(parsedData)) {
+      setIsLoading(false);
+      return;
+    }
+
+    let maxId = 0;
+    parsedData.forEach((item) => {
+      if(Number(item.id) > maxId) {
+        maxId = Number(item.id)
+      }
+    });
+
+    idRef.current = maxId + 1;
+
+    dispatch({
+      type: "INIT",
+      data: parsedData,
+    });
+    
+    setIsLoading(false);
+  }, [])
 
   // 새로운 일기 추가
   const onCreate = (createdDate, emotionId, content) => {
@@ -104,6 +151,10 @@ function App() {
   // 1. "/": 모든 일기를 조회하는 Home 페이지
   // 2. "/new": 새로운 일기를 작성하는 New 페이지
   // 3. "/diary": 일기를 상세히 조회하는 Diary 페이지
+
+  if (isLoading) {
+    return <div>데이터 로딩중입니다...</div>;
+  }
 
   return (
     <>
